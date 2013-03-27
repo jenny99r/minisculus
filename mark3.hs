@@ -25,13 +25,13 @@ doWheel3 original toEncode =
   map wheel3 (zip toEncode ((alpha !! 0):original))
 
 wheel1 wheelIndex charToEncode =
-  applyWheel charToEncode (wheel1Move wheelIndex)
+  applyWheel charToEncode (\n -> alphaCycle !! (n + wheelIndex))
 
 wheel2 wheelIndex charToEncode =
-  applyWheel charToEncode (wheel2Move wheelIndex)
+  applyWheel charToEncode (\n -> alphaCycle !! (length alpha + n - (2 * wheelIndex)))
 
 wheel3 encodeTuple =
-  applyWheel (fst encodeTuple) (wheel3Move (snd encodeTuple))
+  applyWheel (fst encodeTuple) (\n -> alphaCycle !! (n + 2 * (indexOfChar (snd encodeTuple))))
 
 applyWheel charToEncode foundFn =
   case elemIndex charToEncode alphaCycle of
@@ -42,13 +42,3 @@ indexOfChar char =
   case elemIndex char alphaCycle of
     Just n -> n
     Nothing -> -1
-
-
-wheel1Move wheelIndex n =
-  alphaCycle !! (n + wheelIndex)
-
-wheel2Move wheelIndex n =
-  alphaCycle !! (length alpha + n - (2 * wheelIndex))
-
-wheel3Move previousChar n =
-  alphaCycle !! (n + 2 * (indexOfChar previousChar))
